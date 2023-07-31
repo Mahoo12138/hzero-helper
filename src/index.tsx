@@ -3,7 +3,8 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 
 export const init = async () => {
-  // await import("./utils/modules");
+  // import("./utils/modules").then((res) => {
+  // console.log("import", res);
   const interval = window.setInterval(() => {
     const container = document.querySelector(".hzero-normal-header-right");
     console.log("Hzero Helper init:", window);
@@ -17,6 +18,7 @@ export const init = async () => {
       clearInterval(interval);
     }
   }, 2000);
+  // });
 };
 
 init();

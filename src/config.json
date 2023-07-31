@@ -2,5 +2,25 @@
   {
     "name": "值集管理",
     "path": "/hpfm/value-list"
+  },
+  {
+    "name": "值集视图",
+    "path": "/hpfm/lov-view"
+  },
+  {
+    "name": "宏定义",
+    "path": "/hpes/macro/manage/list"
+  },
+  {
+    "name": "列表配置",
+    "path": "/hpes/dynamic/list"
+  },
+  {
+    "name": "业务组件维护",
+    "path": "/hpes/dynamic-component/list"
+  },
+  {
+    "name": "子应用配置",
+    "path": "/hpes/dynamic-mobile/list/query"
   }
 ]

@@ -1,10 +1,10 @@
 const _import = (module: string) => {
-  if (_hzero_externals) {
-    return _hzero_externals[module];
+  if (window._hzero_externals) {
+    return window._hzero_externals[module];
   }
   return null;
 };
 
 window._import = _import;
-
-export {}
+console.log("window._import", window._import);
+export { _import }
