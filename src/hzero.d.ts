@@ -7,6 +7,7 @@ declare global {
   declare interface Route {
     name: string;
     path: string;
+    isShow: boolean
   }
 }
 

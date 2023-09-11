@@ -79,6 +79,16 @@ module.exports = {
       xxl: "20px",
       xxxl: "26px",
     },
+    borderRadius: {
+      none: '0',
+      sm: '2px',
+      DEFAULT: '4px',
+      md: '6px',
+      lg: '8px',
+      full: '9999px',
+      large: '12px',
+    }
+
   },
   plugins: [require("tailwindcss-animate")],
 };

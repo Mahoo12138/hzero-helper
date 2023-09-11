@@ -26,6 +26,7 @@ import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -36,22 +37,19 @@ import {
 import { _import } from "./utils/modules";
 import "./index.css";
 import defaultRoutes from "./config.json";
+import { Input } from "./components/ui/input";
 
 const App: React.FC = () => {
+  const [menuName, setMenuName] = useState("");
+  const [menuPath, setMenuPath] = useState("");
   const history = useMemo(() => {
     //@ts-ignore
     const history = window.dvaApp._history;
     return history as { push: (path: string) => void };
   }, []);
 
-  const [routes, setRoute] = useState(() => {
-    const activeRoutes = JSON.parse(
-      window.localStorage.getItem("activeRoutes") || "[]"
-    );
-    const inactiveRoutes = JSON.parse(
-      window.localStorage.getItem("inactiveRoutes") || "[]"
-    );
-    const routes = [...activeRoutes, ...inactiveRoutes];
+  const [routes, setRoute] = useState<Route[]>(() => {
+    const routes = JSON.parse(window.localStorage.getItem("routes") || "[]");
     if (routes.length == 0) {
       return defaultRoutes;
     }
@@ -59,7 +57,7 @@ const App: React.FC = () => {
   });
 
   return (
-    <div className="flex">
+    <div className="flex whitespace-nowrap">
       {routes
         .filter((r1) => r1.isShow)
         .map((r2) => (
@@ -90,6 +88,7 @@ const App: React.FC = () => {
                 <TableHead>菜单名称</TableHead>
                 <TableHead>菜单路径</TableHead>
                 <TableHead className="text-right">是否显示</TableHead>
+                <TableHead className="text-right">操作</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -102,17 +101,27 @@ const App: React.FC = () => {
                     <Switch
                       checked={route.isShow}
                       onCheckedChange={(isChecked) => {
-                        console.log("onCheckedChange", isChecked);
                         routes[index].isShow = isChecked;
                         setRoute([...routes]);
                       }}
                     />
                   </TableCell>
+                  <TableCell className="text-right">
+                    <Button
+                      variant="destructive"
+                      onClick={() => {
+                        routes.splice(index, 1);
+                        setRoute(routes.slice());
+                      }}
+                    >
+                      删除
+                    </Button>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
-          <div className="flex">
+          <div className="flex gap-[10px]">
             <Dialog>
               {/* <ContextMenu>
                 <ContextMenuTrigger>Right click</ContextMenuTrigger>
@@ -131,20 +140,44 @@ const App: React.FC = () => {
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
-                  <DialogTitle>Are you sure absolutely sure?</DialogTitle>
+                  <DialogTitle>新增菜单项</DialogTitle>
                   <DialogDescription>
-                    This action cannot be undone. Are you sure you want to
-                    permanently delete this file from our servers?
+                    添加路由菜单时，无需附带网站 host，只填写路径即可
                   </DialogDescription>
                 </DialogHeader>
+                <Input
+                  value={menuName}
+                  onChange={(e) => setMenuName(e.target.value)}
+                  type="text"
+                  placeholder="菜单名称"
+                />
+                <Input
+                  value={menuPath}
+                  onChange={(e) => setMenuPath(e.target.value)}
+                  type="text"
+                  placeholder="菜单路由"
+                />
                 <DialogFooter>
-                  <Button type="submit">Confirm</Button>
+                  <DialogClose asChild>
+                    <Button
+                      type="submit"
+                      onClick={() => {
+                        routes.push({
+                          name: menuName,
+                          path: menuPath,
+                          isShow: true,
+                        });
+                        setRoute(routes.slice());
+                      }}
+                    >
+                      确认
+                    </Button>
+                  </DialogClose>
                 </DialogFooter>
               </DialogContent>
             </Dialog>
             <Button
               onClick={() => {
-                console.log("first");
                 window.localStorage.setItem("routes", JSON.stringify(routes));
               }}
             >

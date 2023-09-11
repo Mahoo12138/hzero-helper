@@ -13,6 +13,7 @@ export default defineConfig({
         icon: 'https://vitejs.dev/logo.svg',
         namespace: 'npm/vite-plugin-monkey',
         match: ['https://*.56mada.com/*', "http://localhost:8000/*"],
+        grant: "none"
       },
       build: {
         externalGlobals: {
